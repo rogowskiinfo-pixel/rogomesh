@@ -1,0 +1,80 @@
+ROGOMESH - SPRINT 001
+
+Objetivo: Isolar a interface RogoMesh do Screen.cpp original.
+
+ALTERAÇÕES MANUAIS
+
+1)  Criar dois novos arquivos:
+
+    src/graphics/RogoMeshUI.h src/graphics/RogoMeshUI.cpp
+
+Conteúdo inicial:
+
+  --------------
+  RogoMeshUI.h
+  --------------
+
+#pragma once
+
+#include <OLEDDisplay.h> #include <OLEDDisplayUi.h>
+
+namespace graphics {
+
+class RogoMeshUI { public: static void drawSystem(OLEDDisplay display,
+OLEDDisplayUiState state, int16_t x, int16_t y); };
+
+}
+
+  ----------------
+  RogoMeshUI.cpp
+  ----------------
+
+#include “RogoMeshUI.h” #include “graphics/ScreenFonts.h”
+
+namespace graphics {
+
+void RogoMeshUI::drawSystem(OLEDDisplay display, OLEDDisplayUiState ,
+int16_t x, int16_t y) { display->setTextAlignment(TEXT_ALIGN_CENTER);
+display->setFont(FONT_MEDIUM); display->drawString(64 + x, y + 6,
+“RogoMesh”);
+
+    display->setFont(FONT_SMALL);
+    display->drawString(64 + x, y + 26, "Sprint 001");
+
+}
+
+}
+
+========================================
+
+2)  Em Screen.cpp
+
+Adicionar:
+
+    #include "RogoMeshUI.h"
+
+junto dos demais includes.
+
+========================================
+
+3)  Localizar a função
+
+    Screen::drawRogoMeshScreen(…)
+
+Substituir o conteúdo dela por:
+
+switch(currentRogoState) { case ROGO_SCREEN_SYSTEM:
+RogoMeshUI::drawSystem(display,state,x,y); break;
+
+default: RogoMeshUI::drawSystem(display,state,x,y); break; }
+
+========================================
+
+4)  Não alterar mais nenhuma parte do Screen.cpp nesta Sprint.
+
+Resultado esperado:
+
+-   Screen.cpp continua responsável apenas pela infraestrutura.
+-   Toda a UI nova começa dentro de RogoMeshUI.
+-   As próximas telas (GPS, Rádio, Energia, Rede e Diagnóstico) serão
+    adicionadas somente em RogoMeshUI.cpp.
