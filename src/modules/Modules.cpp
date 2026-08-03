@@ -90,6 +90,17 @@
 #include "modules/DropzoneModule.h"
 #endif
 
+#include "rogomesh/modules/diagnostics/DiagnosticsModule.h"
+#include "rogomesh/modules/fieldops/FieldOpsModule.h"
+#include "rogomesh/modules/secure_access/SecureAccessModule.h"
+#include "rogomesh/modules/sos/SosModule.h"
+#include "rogomesh/modules/tracking/TrackingModule.h"
+#include "rogomesh/services/AlertService.h"
+#include "rogomesh/services/ChannelPolicyService.h"
+#include "rogomesh/services/DiagnosticsService.h"
+#include "rogomesh/services/NodeStatusService.h"
+#include "rogomesh/services/TeamTrackingService.h"
+
 /**
  * Create module instances here.  If you are adding a new module, you must 'new' it here (or somewhere else)
  */
@@ -130,6 +141,19 @@ void setupModules()
 #if !MESHTASTIC_EXCLUDE_DROPZONE
         dropzoneModule = new DropzoneModule();
 #endif
+
+        new TeamTrackingService();
+        new NodeStatusService();
+        new AlertService();
+        new DiagnosticsService();
+        new ChannelPolicyService();
+
+        new TrackingModule();
+        new SecureAccessModule();
+        new SosModule();
+        new DiagnosticsModule();
+        new FieldOpsModule();
+
         // Note: if the rest of meshtastic doesn't need to explicitly use your module, you do not need to assign the instance
         // to a global variable.
 
